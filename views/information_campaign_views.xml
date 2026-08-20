@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vue formulaire -->
+    <record id="view_information_campaign_form" model="ir.ui.view">
+        <field name="name">information.campaign.form</field>
+        <field name="model">information.campaign</field>
+        <field name="arch" type="xml">
+            <form string="Campagne d'Information">
+                <header>
+                    <button name="action_launch" type="object" 
+                            string="Lancer" class="btn-primary"
+                            invisible="state in ['active', 'expired', 'cancelled']"/>
+                    <button name="action_cancel" type="object" 
+                            string="Annuler" class="btn-secondary"
+                            invisible="state != 'active'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="priority"/>
+                            <field name="show_once"/>
+                        </group>
+                        <group>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+
+                    <!-- NOUVEAU GROUPE POUR LES PARAMÈTRES DE RÉPÉTITION -->
+                    <group string="⏰ Paramètres de répétition">
+                        <group>
+                            <field name="repeat_display"/>
+                            <field name="repeat_interval" invisible="not repeat_display"/>
+                            <field name="repeat_unit" invisible="not repeat_display"/>
+                        </group>
+                        <!-- <group>
+                            <div class="alert alert-info" invisible="not repeat_display" style="margin: 0;">
+                                <p><strong>ℹ️ Information :</strong></p>
+                                <p>Si activé, la campagne sera réaffichée aux utilisateurs après l'intervalle défini, même s'ils l'ont déjà vue.</p>
+                                <p><em>Cela remplace le paramètre "Afficher une seule fois".</em></p>
+                            </div>
+                            <div class="alert alert-warning" invisible="repeat_display" style="margin: 0;">
+                                <p><strong>⚠️ Mode actuel :</strong></p>
+                                <p invisible="show_once">La campagne s'affichera à chaque connexion/actualisation.</p>
+                                <p invisible="not show_once">La campagne s'affichera une seule fois par utilisateur.</p>
+                            </div>
+                        </group> -->
+                    </group>
+
+                    <notebook>
+                        <page string="Description">
+                            <field name="description" widget="html"/>
+                        </page>
+                        <page string="Utilisateurs ciblés">
+                            <field name="target_users" widget="many2many_tags"/>
+                            <p class="text-muted">
+                                Si aucun utilisateur n'est sélectionné, 
+                                tous les utilisateurs verront le pop-up.
+                            </p>
+                        </page>
+                        <page string="Statistiques">
+                            <group>
+                                <field name="viewed_users" widget="many2many_tags" readonly="1"/>
+                            </group>
+                        </page>
+                        <page string="Historique détaillé">
+                            <field name="view_history_ids" readonly="1">
+                                <tree>
+                                    <field name="user_id"/>
+                                    <field name="view_date"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" />
+                    <field name="activity_ids" widget="mail_activity" />
+                    <field name="message_ids" widget="mail_thread" />
+                </div>
+            </form>
+        </field>
+    </record>
+
+<!-- Vue Kanban améliorée -->
+
+
+
+
+    <!-- Vue liste -->
+    <record id="view_information_campaign_tree" model="ir.ui.view">
+        <field name="name">information.campaign.tree</field>
+        <field name="model">information.campaign</field>
+        <field name="arch" type="xml">
+            <tree string="Campagnes d'Information">
+                <field name="name"/>
+                <field name="priority" widget="badge"/>
+                <field name="repeat_display" widget="boolean_toggle"/>
+                <field name="repeat_interval" invisible="1"/>
+                <field name="repeat_unit" invisible="1"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="state" widget="badge" 
+                       decoration-success="state == 'active'"
+                       decoration-muted="state == 'expired'"
+                       decoration-danger="state == 'cancelled'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vue recherche/filtre -->
+    <record id="view_information_campaign_search" model="ir.ui.view">
+        <field name="name">information.campaign.search</field>
+        <field name="model">information.campaign</field>
+        <field name="arch" type="xml">
+            <search string="Rechercher Campagnes">
+                <field name="name" string="Nom"/>
+                <field name="state"/>
+                <field name="priority"/>
+                <separator/>
+                <filter string="Actives" name="active" domain="[('state', '=', 'active')]"/>
+                <filter string="Brouillons" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Expirées" name="expired" domain="[('state', '=', 'expired')]"/>
+                <separator/>
+                <filter string="Haute priorité" name="high_priority" domain="[('priority', 'in', ['high', 'urgent'])]"/>
+                <filter string="Répétition activée" name="repeat_enabled" domain="[('repeat_display', '=', True)]"/>
+                <group expand="0" string="Grouper par">
+                    <filter string="État" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Priorité" name="group_priority" context="{'group_by': 'priority'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_information_campaign" model="ir.actions.act_window">
+        <field name="name">Campagnes d'Information</field>
+        <field name="res_model">information.campaign</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_information_campaign_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créez votre première campagne d'information !
+            </p>
+            <p>
+                Les campagnes permettent d'afficher des pop-ups informatifs
+                aux utilisateurs lors de leur connexion.
+            </p>
+        </field>
+    </record>
+</odoo>

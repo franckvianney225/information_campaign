@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Cron pour lancer automatiquement les campagnes -->
+    <record id="ir_cron_auto_launch_campaign" model="ir.cron">
+        <field name="name">Auto Launch Information Campaigns</field>
+        <field name="model_id" ref="model_information_campaign"/>
+        <field name="state">code</field>
+        <field name="code">
+now = fields.Datetime.now()
+model.search([('state', '=', 'draft'), ('start_date', '&lt;=', now)]).write({'state': 'active'})
+        </field>
+        <field name="interval_number">5</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="active">True</field>
+    </record>
+
+    <!-- Cron pour expirer automatiquement les campagnes -->
+    <record id="ir_cron_expire_campaign" model="ir.cron">
+        <field name="name">Auto Expire Information Campaigns</field>
+        <field name="model_id" ref="model_information_campaign"/>
+        <field name="state">code</field>
+        <field name="code">model.auto_expire_campaigns()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">hours</field>
+        <field name="numbercall">-1</field>
+        <field name="active">True</field>
+    </record>
+</odoo>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Catégorie pour les groupes du module -->
+        <record id="module_information_campaign_category" model="ir.module.category">
+            <field name="name">Communication Interne</field>
+            <field name="description">Gestion des campagnes d'information</field>
+            <field name="sequence">50</field>
+        </record>
+
+        <!-- Groupe Administrateur Campagnes -->
+        <record id="group_information_campaign_admin" model="res.groups">
+            <field name="name">Administrateur Campagnes</field>
+            <field name="category_id" ref="module_information_campaign_category"/>
+            <field name="comment">Peut créer, modifier et supprimer les campagnes d'information</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <!-- Groupe Utilisateur Campagnes (optionnel) -->
+        <record id="group_information_campaign_user" model="res.groups">
+            <field name="name">Utilisateur Campagnes</field>
+            <field name="category_id" ref="module_information_campaign_category"/>
+            <field name="comment">Peut voir les campagnes d'information (lecture seule)</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Menu principal (visible seulement pour les administrateurs de campagnes) -->
+    <menuitem id="menu_information_campaign_main"
+              name="Communication"
+              sequence="100"
+              groups="group_information_campaign_admin"
+            web_icon="information_campaign,static/description/icon.png"/>
+
+    <!-- Sous-menu Campagnes -->
+    <menuitem id="menu_information_campaign"
+              name="Campagnes d'Information"
+              parent="menu_information_campaign_main"
+              action="action_information_campaign"
+              sequence="10"
+              groups="group_information_campaign_admin"/>
+
+    <!-- Sous-menu Historique (optionnel) -->
+    <!-- <menuitem id="menu_campaign_history"
+              name="Historique des vues"
+              parent="menu_information_campaign_main"
+              action="action_campaign_view_history"
+              sequence="20"
+              groups="group_information_campaign_admin"/> -->
+</odoo>

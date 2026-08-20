@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="information_campaign.CampaignPopupTemplate">
+        <div class="modal fade show" style="display: block; background-color: rgba(0,0,0,0.5);">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content campaign-popup-modal">
+                    <!-- Header avec priorité -->
+                    <div class="modal-header" t-att-class="'priority-' + props.campaign.priority">
+                        <div class="d-flex align-items-center w-100">
+                            <i class="fa fa-bullhorn me-2" style="font-size: 1.2em;"></i>
+                            <h4 class="modal-title mb-0 flex-grow-1" t-esc="props.campaign.name"></h4>
+                            <span class="badge priority-badge ms-2" t-att-class="'priority-' + props.campaign.priority">
+                                <t t-if="props.campaign.priority == 'urgent'">🚨 Urgent</t>
+                                <t t-elif="props.campaign.priority == 'high'">⚠️ Haute</t>
+                                <t t-elif="props.campaign.priority == 'normal'">ℹ️ Normale</t>
+                                <t t-else="">📝 Basse</t>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <!-- Corps du message -->
+                    <div class="modal-body">
+                        <div class="campaign-content" t-raw="props.campaign.description"></div>
+                        
+                        <!-- Informations additionnelles -->
+                        <div class="campaign-info mt-3 pt-3 border-top">
+                            <small class="text-muted">
+                                <i class="fa fa-clock-o me-1"></i>
+                                Message affiché le <t t-esc="getCurrentDate()"/>
+                            </small>
+                        </div>
+                    </div>
+                    
+                    <!-- Footer avec boutons -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" t-on-click="onCancel">
+                            <i class="fa fa-times me-1"></i>
+                            Fermer
+                        </button>
+                        <button type="button" class="btn btn-primary" t-on-click="onConfirm">
+                            <i class="fa fa-check me-1"></i>
+                            J'ai lu
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

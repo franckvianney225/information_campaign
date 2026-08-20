@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_information_campaign_admin,information.campaign.admin,model_information_campaign,group_information_campaign_admin,1,1,1,1
+access_information_campaign_user,information.campaign.user,model_information_campaign,group_information_campaign_user,1,0,0,0
+access_information_campaign_all_users,information.campaign.all.users,model_information_campaign,base.group_user,1,0,0,0
+access_information_campaign_view_history_admin,information.campaign.view.history.admin,model_information_campaign_view_history,group_information_campaign_admin,1,1,1,1
+access_information_campaign_view_history_user,information.campaign.view.history.user,model_information_campaign_view_history,group_information_campaign_user,1,0,0,0
+access_information_campaign_view_history_all_users,information.campaign.view.history.all.users,model_information_campaign_view_history,base.group_user,1,0,0,0
